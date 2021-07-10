@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-syntax-highlighter/dist/esm/index.js b/node_modules/react-syntax-highlighter/dist/esm/index.js
+index d5a9005..aec7f32 100644
+--- a/node_modules/react-syntax-highlighter/dist/esm/index.js
++++ b/node_modules/react-syntax-highlighter/dist/esm/index.js
+@@ -1,7 +1,4 @@
+ export { default } from './default-highlight';
+-export { default as LightAsync } from './light-async';
+ export { default as Light } from './light';
+-export { default as PrismAsyncLight } from './prism-async-light';
+-export { default as PrismAsync } from './prism-async';
+ export { default as PrismLight } from './prism-light';
+ export { default as Prism } from './prism';

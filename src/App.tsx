@@ -1,41 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-interface AppProps {}
+interface Presentation {
+  Presentation: React.LazyExoticComponent<() => JSX.Element>;
+  name: string;
+  path: string;
+}
 
-function App({}: AppProps) {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
-  useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
-  // Return the App component.
+const presentations: ReadonlyArray<Presentation> = [
+  {
+    Presentation: React.lazy(
+      () => import('./presentations/ExamplePresentation'),
+    ),
+    name: 'Example',
+    path: '/example',
+  },
+];
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>
-          Page has been open for <code>{count}</code> seconds.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
-    </div>
+    <Router>
+      <Suspense fallback="Loading...">
+        <div>
+          <nav>
+            <ul>
+              {presentations.map(({ name, path }) => (
+                <li key={path}>
+                  <Link to={path}>{name}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <Switch>
+            {presentations.map(({ Presentation, path }) => (
+              <Route key={path} path={path}>
+                <Presentation />
+              </Route>
+            ))}
+          </Switch>
+        </div>
+      </Suspense>
+    </Router>
   );
 }
 
-export default App;
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <h2>About</h2>;
+}
+
+function Users() {
+  return <h2>Users</h2>;
+}
